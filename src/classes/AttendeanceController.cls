@@ -1,0 +1,27 @@
+public with sharing class AttendeanceController {
+
+public AttendeanceController(){
+
+	list<CEvent> Eve = new list<CEvent>();
+	Eve = getEvents();
+	JSONDATA = JSON.serialize(Eve);
+				
+}
+
+public static list<CEvent> getEvents(){
+	list<CEvent> EventList = new list<CEvent>();
+	list<Event__c> EvList = [Select e.Type__c, e.Start_Date_Time__c, e.Purpose__c, e.Name, e.Id, e.End_Date_Time__c, e.Description__c From Event__c e];
+	for(Event__c ev : EvList){
+		string title = ev.name+' ('+ ev.Type__c +')';
+		datetime dt = ev.Start_Date_Time__c;
+		EventList.add(new CEvent(title, string.valueOf(dt)));
+	}
+	return EventList;
+}
+
+ 
+public string JSONDATA{get;set;}
+
+
+
+}
